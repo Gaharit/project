@@ -1,0 +1,187 @@
+#pragma once
+#include <stdio.h>
+#include "tests.h"
+#include <Windows.h>
+#include <time.h>
+#include "sorts.h"
+
+#define COLOR_RED 12
+#define COLOR_GREEN 10
+#define COLOR_DEFAULT 15
+#define STRESS_AMOUNT 10
+#define DIGIT 3
+#define NUMEVEN 4
+#define NUMODD 5
+
+//Этот вспомогательный метод может быть полезным ... 
+void print_test_result(HANDLE hConsole, char* test_name, int correct)
+{
+	SetConsoleTextAttribute(hConsole, correct ? COLOR_GREEN : COLOR_RED);
+	printf("%s: %s\n", test_name, correct ? "SUCCESS" : "FAIL");
+	SetConsoleTextAttribute(hConsole, COLOR_DEFAULT);
+}
+
+// ... и этот тоже
+void print_test_diff(HANDLE hConsole, int* expected, int* actual, int length)
+{
+	int i;
+	printf("Expected: ");
+	for (i = 0; i < length; i++)
+		printf("%d\t", expected[i]);
+	printf("\n  Actual: ");
+	for (i = 0; i < length; i++)
+	{
+		SetConsoleTextAttribute(hConsole, expected[i] == actual[i] ? COLOR_GREEN : COLOR_RED);
+		printf("%d\t", actual[i]);
+	}
+}
+
+void test_null()
+{
+	
+	int *array = NULL;
+	printf("NULL test:\n");
+	printf("Array is:           %p\n", array);
+	printf("Expected result is: %p\n", array);
+	printf("Actual result is:   ");
+	bubblesort(array, 0);
+	printf("%p\n", array);
+	if (NULL == array) {
+		printf("Success\n\n");
+		return 0;
+	}
+	else printf("Failure\n\n");
+	//Здесь напишите тест для случая когда в функцию сортировки передаётся NULL вместо массива
+}
+
+void test_one_element()
+{
+	int array[1] = { DIGIT };
+	int expres[1] = { DIGIT };
+	int res[1] = { DIGIT };
+	printf("One element test:\n");
+	printf("Array is:           %d\n", array[0]);
+	printf("Expected result is: %d\n", expres[0]);
+	printf("Actual result is:   ");
+	bubblesort(res, 1);
+	printf("%d", res[0]);
+	if (expres[0] == res[0]) {
+		printf("\nSuccess\n\n");
+		return 0;
+	}
+	else printf("\nFailure\n\n");
+	//Здесь напишите тест для случая когда массив длины 1
+}
+
+void test_two_elements()
+{
+	int i;
+	int array[2] = { 5, 2};
+	int expres[2] = { 2, 3};
+	int res[2];
+	for (i = 0; i < 2; i++)
+		res[i] = array[i];
+	printf("One element test:\n");
+	printf("Array is:           ");
+	for (i = 0; i < 2; i++)
+		printf("%d ", array[i]);
+	printf("\nExpected result is: ", expres[1]);
+	for (i = 0; i < 2; i++)
+		printf("%d ", expres[i]);
+	printf("\nActual result is:   ");
+	bubblesort(res, 2);
+	for (i=0; i<2; i++)
+	printf("%d ", res[i]);
+	for (i=0; i<2; i++)
+		if (expres[0] != res[0]) {
+			printf("\nFailure\n\n");
+			return 0;
+		}
+	printf("\nSuccess\n\n");
+	return 0;
+	//Здесь напишите тест для случая когда массив длины 2
+}
+
+void test_common_even(/*не забудь про параметр*/)
+{
+	int i;
+	int array[NUMEVEN] = { 5, 2, 14, 3 };
+	int expres[NUMEVEN] = { 2, 3, 5, 14 };
+	int res[NUMEVEN];
+	for (i = 0; i < NUMEVEN; i++)
+		res[i] = array[i];
+	printf("One element test:\n");
+	printf("Array is:           ");
+	for (i = 0; i < NUMEVEN; i++)
+		printf("%d ", array[i]);
+	printf("\nExpected result is: ", expres[1]);
+	for (i = 0; i < NUMEVEN; i++)
+		printf("%d ", expres[i]);
+	printf("\nActual result is:   ");
+	bubblesort(res, NUMEVEN);
+	for (i = 0; i<NUMEVEN; i++)
+		printf("%d ", res[i]);
+	for (i = 0; i<NUMEVEN; i++)
+		if (expres[0] != res[0]) {
+			printf("\nFailure\n\n");
+			return 0;
+		}
+	printf("\nSuccess\n\n");
+	return 0;
+	//Здесь напишите тест для случая когда массив произвольной чётной длины
+}
+
+void test_common_odd(/*не забудь про параметр*/)
+{
+	int i;
+	int array[NUMODD] = { 5, 2, 14, 3, 21 };
+	int expres[NUMODD] = { 2, 3, 5, 14, 21 };
+	int res[NUMODD];
+	for (i = 0; i < NUMODD; i++)
+		res[i] = array[i];
+	printf("One element test:\n");
+	printf("Array is:           ");
+	for (i = 0; i < NUMODD; i++)
+		printf("%d ", array[i]);
+	printf("\nExpected result is: ", expres[1]);
+	for (i = 0; i < NUMODD; i++)
+		printf("%d ", expres[i]);
+	printf("\nActual result is:   ");
+	bubblesort(res, NUMODD);
+	for (i = 0; i<NUMODD; i++)
+		printf("%d ", res[i]);
+	for (i = 0; i<NUMODD; i++)
+		if (expres[0] != res[0]) {
+			printf("\nFailure\n\n");
+			return 0;
+		}
+	printf("\nSuccess\n\n");
+	return 0;
+	//Здесь напишите тест для случая когда массив произвольной нечётной длины
+}
+
+void test_speed(/*не забудь про параметр*/)
+{
+	int stress;
+	long start = clock();
+	for (stress = 0; stress < STRESS_AMOUNT; stress++)
+	{
+
+	}
+	long finish = clock();
+	//Можете изменить формат вывода результатов
+	printf("Elapsed time: %lf\n", ((double)(finish - start)) / CLOCKS_PER_SEC);
+}
+
+void test_sort()
+{
+	test_null();
+	test_one_element();
+	test_two_elements();
+	test_common_even();
+	test_common_odd();
+
+	test_speed(/*Для упорядоченного по возрастанию массива*/);
+	test_speed(/*Для упорядоченного по убыванию массива*/);
+	test_speed(/*Для неупорядоченного массива*/);
+}
