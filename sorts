@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include "tests.h"
+#include <Windows.h>
+#include <time.h>
+
+
+void insertsort(int*a, int n)
+{
+	int i, j=10, temp;
+	for (i = 1; i < n; i++) {
+		temp = a[i];
+			while (j >= 0 && a[j] > temp) {
+				a[j + 1] = a[j];
+				j--;
+			}
+		a[j + 1] = temp;
+	}
+};
+
+void gnomesort(int*a, int n)
+{
+	int i, temp;
+	for (i = 0; i < n; i++)
+		if (a[i] >= a[i + 1]) {
+			temp = a[i + 1];
+			a[i + 1] = a[i];
+			a[i] = temp;
+			i -= 2;
+		}
+}
